@@ -13,10 +13,11 @@ var con = mysql.createConnection({
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
-  // con.query("CREATE DATABASE mydb", function (err, result) {
-  //   if (err) throw err;
-  //   console.log("Database created");
-  // });
+
+  con.query("use ti_pianto_per_amore", function (err, result) {
+    if (err) throw err;
+    console.log(result);
+  });
 });
 
 app.listen(PORT, () => {
