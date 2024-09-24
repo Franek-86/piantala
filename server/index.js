@@ -14,7 +14,7 @@ con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
 
-  con.query("use ti_pianto_per_amore", function (err, result) {
+  con.query("SHOW databases", function (err, result) {
     if (err) throw err;
     console.log(result);
   });
