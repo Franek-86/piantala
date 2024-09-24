@@ -22,3 +22,17 @@ code {
 .leaflet-container .leaflet-marker-pane img {
   width: 74px;
 }
+
+/* buttons */
+.testButton {
+  right: 0.5rem;
+  height: 30%;
+  width: 100%;
+  /* border: 2px solid red; */
+  display: flex;
+  z-index: 1000;
+  position: absolute;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+}
