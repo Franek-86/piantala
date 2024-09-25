@@ -1,8 +1,10 @@
 import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
+import L from "leaflet";
 import icon from "leaflet/dist/images/tree.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
-import L from "leaflet";
 import Buttons from "./components/Buttons";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -20,6 +22,23 @@ let DefaultIcon = L.icon({
 // );
 L.Marker.prototype.options.icon = DefaultIcon;
 function App() {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/api/data");
+        setData(response.data);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching data:", err);
+      }
+    };
+    console.log(data);
+    fetchData();
+  }, []);
+
   return (
     <div className='App'>
       {/* 41.137379888248084, 16.867986684368702 */}

@@ -8,7 +8,9 @@ import "./index.css";
 import Login from "./pages/Login";
 import ErrorPage from "./pages/ErrorPage";
 import Plant from "./pages/Plant";
+
 import "bootstrap/dist/css/bootstrap.min.css";
+import AddPlant from "./pages/AddPlant";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "map/:mapId",
         element: <Plant />,
+      },
+      {
+        path: "addPlant",
+        element: <AddPlant />,
       },
     ],
   },
