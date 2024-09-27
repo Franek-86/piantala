@@ -24,21 +24,22 @@ let DefaultIcon = L.icon({
 // );
 L.Marker.prototype.options.icon = DefaultIcon;
 function App() {
-  const [data, setData] = useState([]);
+  const [piante, setPiante] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/api/data");
-        setData(response.data);
+        const response = await axios.get("http://localhost:3001/api/piantine");
+        console.log(response);
+        setPiante(response.data);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching data:", err);
       }
     };
-    console.log(data);
+    console.log(piante);
     fetchData();
   }, []);
 
@@ -57,19 +58,24 @@ function App() {
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
           />
           <Buttons />
-          <Marker
-            position={[41.119828319867715, 16.879972196686786]}
-            eventHandlers={{
-              click: () => {
-                console.log("marker clicked");
-                navigate("/map/123");
-              },
-            }}
-          >
-            {/* <Popup>
+          {piante.map((e) => {
+            return (
+              <Marker
+                position={[e.lat, e.lang]}
+                key={e.id}
+                eventHandlers={{
+                  click: () => {
+                    console.log("marker clicked");
+                    navigate(`/map/${e.id}`);
+                  },
+                }}
+              >
+                {/* <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup> */}
-          </Marker>
+              </Marker>
+            );
+          })}
         </MapContainer>
       </article>
       <article className='bottom-bar'>

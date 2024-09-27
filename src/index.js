@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <AddPlant />,
   },
   {
-    path: "map/:mapId",
+    path: "map/:plantId",
     element: <Plant />,
   },
 ]);
