@@ -5,6 +5,8 @@ import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import Buttons from "./components/Buttons";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import BottomBar from "./components/BottomBar";
+import { useNavigate } from "react-router-dom";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -24,6 +26,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 function App() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,24 +43,38 @@ function App() {
   }, []);
 
   return (
-    <div className='App'>
+    <div className='section map-section'>
       {/* 41.137379888248084, 16.867986684368702 */}
-      <MapContainer
-        center={[41.118778112249046, 16.871917818963464]}
-        zoom={13}
-        scrollWheelZoom={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-        />
-        <Buttons />
-        <Marker position={[41.119828319867715, 16.879972196686786]}>
-          {/* <Popup>
+      <article className='map'>
+        <MapContainer
+          center={[41.118778112249046, 16.871917818963464]}
+          zoom={13}
+          scrollWheelZoom={false}
+          zoomControl={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+          />
+          <Buttons />
+          <Marker
+            position={[41.119828319867715, 16.879972196686786]}
+            eventHandlers={{
+              click: () => {
+                console.log("marker clicked");
+                navigate("/map/123");
+              },
+            }}
+          >
+            {/* <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup> */}
-        </Marker>
-      </MapContainer>
+          </Marker>
+        </MapContainer>
+      </article>
+      <article className='bottom-bar'>
+        <BottomBar />
+      </article>
     </div>
   );
 }

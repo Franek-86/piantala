@@ -13,26 +13,74 @@ code {
 }
 @import url("~leaflet/dist/leaflet.css");
 
-.leaflet-container {
-  width: 100%;
-  height: 100vh;
-}
-
 /* tree */
 .leaflet-container .leaflet-marker-pane img {
   width: 74px;
 }
 
-/* buttons */
-.testButton {
-  right: 0.5rem;
-  height: 30%;
-  width: 100%;
-  /* border: 2px solid red; */
+/* map section */
+
+.map-section {
   display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+.map {
+  flex: 1;
+}
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.bottom-bar {
+  background-color: #fff;
+  height: 10vh;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  z-index: 1000;
+}
+/* buttons */
+.rightButtons {
+  top: 2rem;
+  right: 0.75rem;
   z-index: 1000;
   position: absolute;
+  display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-end;
+  gap: 1rem;
+}
+.leftButton {
+  top: 2rem;
+  left: 0.75rem;
+  z-index: 1000;
+  position: absolute;
+}
+
+/* bottom bar */
+
+/* add plant button */
+.circle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: #fff; /* Change color as needed */
+  color: green !important; /* Icon color */
+  text-decoration: none; /* Remove underline */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.circle-button:hover {
+  background-color: green; /* Darker shade on hover */
+  color: #fff !important;
+  /* transform: scale(1.1);  */
+}
+
+.circle-button svg {
+  width: 24px; /* Icon size */
+  height: 24px; /* Icon size */
 }

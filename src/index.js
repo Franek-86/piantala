@@ -20,16 +20,20 @@ const router = createBrowserRouter([
     path: "/map",
     element: <App />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "map/:mapId",
-        element: <Plant />,
-      },
-      {
-        path: "addPlant",
-        element: <AddPlant />,
-      },
-    ],
+    // children: [
+    //   {
+    //     path: "map/:mapId",
+    //     element: <Plant />,
+    //   },
+    // ],
+  },
+  {
+    path: "/map/addPlant",
+    element: <AddPlant />,
+  },
+  {
+    path: "map/:mapId",
+    element: <Plant />,
   },
 ]);
 
