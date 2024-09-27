@@ -5,6 +5,7 @@ const bodyParser = require("body-parser"); // Import body-parser
 const cors = require("cors"); // Import CORS
 
 const app = express();
+app.use(express.json()); // Add this line to parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
 // Use body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -37,12 +38,37 @@ app.get("/api/data", (req, res) => {
     res.json(results);
   });
 });
-app.post("/api/piantine", (req, res) => {
+app.get("/api/piantine", (req, res) => {
+  const sql = "SELECT * FROM piantine";
+  con.query(sql, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+app.post("/api/pianta", (req, res) => {
   const { lat, lang, image_url, user_id } = req.body; // Adjust these based on your table's columns
   const sql =
     "INSERT INTO piantine (lat, lang, image_url, user_id) VALUES (?, ?, ?,?)";
 
-  db.query(sql, [lat, lang, image_url, user_id], (err, result) => {
+  con.query(sql, [lat, lang, image_url, user_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+    res
+      .status(201)
+      .json({ message: "Item added successfully!", id: result.insertId });
+  });
+});
+app.post("/api/user", (req, res) => {
+  const { email, user_password } = req.body; // Adjust these based on your table's columns
+  const sql = "INSERT INTO users (email, user_password) VALUES (?, ?)";
+
+  con.query(sql, [email, user_password], (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).send(err);
@@ -57,7 +83,7 @@ app.delete("/api/piantine/:id", (req, res) => {
   const { id } = req.params; // Extract the ID from the request parameters
   const sql = "DELETE FROM piantine WHERE id = ?"; // Adjust this SQL to match your table's schema
 
-  db.query(sql, [id], (err, result) => {
+  con.query(sql, [id], (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).send(err);
