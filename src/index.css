@@ -84,3 +84,10 @@ code {
   width: 24px; /* Icon size */
   height: 24px; /* Icon size */
 }
+/* sinle plant */
+
+.plant-image {
+  object-fit: cover;
+  width: 50vw;
+  max-width: 15rem;
+}
