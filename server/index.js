@@ -3,7 +3,8 @@ var mysql = require("mysql");
 const PORT = process.env.PORT || 3001;
 const bodyParser = require("body-parser"); // Import body-parser
 const cors = require("cors"); // Import CORS
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const app = express();
 app.use(express.json()); // Add this line to parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
@@ -64,18 +65,82 @@ app.post("/api/pianta", (req, res) => {
       .json({ message: "Item added successfully!", id: result.insertId });
   });
 });
-app.post("/api/user", (req, res) => {
-  const { email, user_password } = req.body; // Adjust these based on your table's columns
-  const sql = "INSERT INTO users (email, user_password) VALUES (?, ?)";
 
-  con.query(sql, [email, user_password], (err, result) => {
+app.post("/api/register-user", async (req, res) => {
+  const { email, user_password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(user_password, 10);
+    const sql = "INSERT INTO users (email, user_password) VALUES (?, ?)";
+
+    con.query(sql, [email, hashedPassword], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+
+      // Only create token after successful database insertion
+      const token = jwt.sign(
+        { id: result.insertId, email: email }, // Payload data (id, email, etc.)
+        "your_jwt_secret_key", // Secret key
+        { expiresIn: "1h" } // Expiration time
+      );
+
+      // Send the token to the frontend
+      res.status(201).json({
+        message: "User registered successfully!",
+        token: token, // Send the token in the response
+      });
+    });
+  } catch (error) {
+    console.error("Error during user registration:", error);
+    res.status(500).json({ message: "Server error during registration" });
+  }
+});
+
+app.post("/api/login", (req, res) => {
+  const { email, user_password } = req.body;
+
+  // Query to find the user by email
+  const sql = "SELECT * FROM users WHERE email = ?";
+
+  con.query(sql, [email], async (err, result) => {
     if (err) {
-      console.log(err);
-      return res.status(500).send(err);
+      console.error(err);
+      return res.status(500).json({ message: "Server error" });
     }
-    res
-      .status(201)
-      .json({ message: "Item added successfully!", id: result.insertId });
+
+    // Check if the user was found
+    if (result.length === 0) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const user = result[0];
+    console.log("this", user);
+
+    // Compare the password with the hashed password from the database
+    const passwordMatch = await bcrypt.compare(
+      user_password,
+      user.user_password
+    );
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // If login is successful, you can generate a token (JWT) for authentication
+    const token = jwt.sign(
+      { id: user.user_id, email: user.email }, // Payload data (like user ID, etc.)
+      "your_jwt_secret_key", // Your secret key
+      { expiresIn: "1h" } // Token expiration time
+    );
+
+    // Send back the token and user data if login is successful
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: { id: user.user_id, email: user.email },
+    });
   });
 });
 
