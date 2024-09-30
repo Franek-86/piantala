@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const AddPlant = () => {
   const {
@@ -15,22 +16,24 @@ const AddPlant = () => {
   } = useForm();
   const [submissionError, setSubmissionError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [userId, setUserId] = useState(null);
   const fileInputRef = useRef(null);
   const navigate = useNavigate(); // For navigation
-
-  const token = localStorage.getItem("authToken");
-  let userId = null;
-  if (token) {
-    try {
-      const decodedToken = jwtDecode(token);
-      userId = decodedToken.id; // Extract user ID
-      console.log(userId);
-    } catch (error) {
-      console.error("Failed to decode token:", error);
-      setSubmissionError("Invalid token.");
-      return;
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id); // Extract user ID
+        // console.log(userId);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+        setSubmissionError("Invalid token.");
+        return;
+      }
     }
-  }
+  }, [userId]);
+  const token = localStorage.getItem("authToken");
+
   // Regex pattern for longitude and latitude format
   const latLongPattern = /^\d{1,2}\.\d+$/;
 
@@ -56,18 +59,56 @@ const AddPlant = () => {
     return true;
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const { longitude, latitude, file } = data;
 
-    // if (!file.length) {
-    //   setError("file", { type: "manual", message: "Image file is required." });
-    //   return;
-    // }
+    if (!file || !file[0]) {
+      setError("file", { type: "manual", message: "Image file is required." });
+      return;
+    }
+
+    // To access the actual file, use file[0]
+    const selectedFile = file[0];
+
+    const formData = new FormData();
+    formData.append("lat", latitude);
+    formData.append("lang", longitude);
+    formData.append("image", file[0]); // The selected file
+    formData.append("user_id", userId); // Include user ID
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    try {
+      // Make a POST request to the API
+      const response = await axios.post(
+        "http://localhost:3001/api/pianta",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Important for file uploads
+            Authorization: `Bearer ${token}`, // Optional: Send the token if needed
+          },
+        }
+      );
+      if (response.status === 201) {
+        setSuccessMessage("Plant added successfully!");
+        reset(); // Reset the form fields
+      }
+    } catch (error) {
+      console.error("Error adding plant:", error);
+      setSubmissionError(
+        error.response?.data?.message || "Failed to submit the form"
+      );
+    }
+    // console.log("Form data:", {
+    //   longitude,
+    //   latitude,
+    //   file: selectedFile, // Log the selected file
+    //   userId: 11, // Assuming userId is static
+    // });
 
     setSubmissionError("");
     setSuccessMessage("Form has been submitted successfully!");
-
-    console.log("Form data:", { longitude, latitude, file });
 
     // Clear the form after submission
     reset();
@@ -78,7 +119,7 @@ const AddPlant = () => {
     // Clear success message after 3 seconds
     setTimeout(() => {
       setSuccessMessage("");
-      navigate("/map"); // Optionally redirect to the map after success
+      // navigate("/map"); // Uncomment when needed
     }, 3000);
   };
 

@@ -2,14 +2,19 @@ const express = require("express");
 var mysql = require("mysql");
 const PORT = process.env.PORT || 3001;
 const bodyParser = require("body-parser"); // Import body-parser
+const multer = require("multer");
+const path = require("path");
 const cors = require("cors"); // Import CORS
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json()); // Add this line to parse JSON bodies
 app.use(cors()); // Enable CORS for all routes
 // Use body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
+// Serve static files from the 'uploads' directory
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -25,6 +30,48 @@ con.connect(function (err) {
   //   if (err) throw err;
   //   console.log(result);
   // });
+});
+
+// Configure multer to store files in 'uploads/' directory
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "uploads")); // Ensure this path is correct
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}_${file.originalname}`; // Generate a unique name
+    cb(null, uniqueName);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/api/pianta", upload.single("image"), (req, res) => {
+  const { lat, lang, user_id } = req.body; // Extract lat, lang, user_id from the form
+
+  // Handle file upload
+  if (!req.file) {
+    return res.status(400).json({ message: "Image file is required" });
+  }
+
+  const image_url = `/uploads/${req.file.filename}`; // The relative path to the uploaded file
+
+  // Insert the record into the database
+  const sql =
+    "INSERT INTO piantine (lat, lang, image_url, user_id) VALUES (?, ?, ?, ?)";
+
+  con.query(sql, [lat, lang, image_url, user_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+
+    // Return a success response with the inserted record's ID
+    res.status(201).json({
+      message: "Item added successfully!",
+      id: result.insertId,
+      image_url, // Return the image URL for further use (optional)
+    });
+  });
 });
 
 // Create an API route to fetch data
@@ -48,21 +95,6 @@ app.get("/api/piantine", (req, res) => {
     }
     console.log(results);
     res.json(results);
-  });
-});
-app.post("/api/pianta", (req, res) => {
-  const { lat, lang, image_url, user_id } = req.body; // Adjust these based on your table's columns
-  const sql =
-    "INSERT INTO piantine (lat, lang, image_url, user_id) VALUES (?, ?, ?,?)";
-
-  con.query(sql, [lat, lang, image_url, user_id], (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send(err);
-    }
-    res
-      .status(201)
-      .json({ message: "Item added successfully!", id: result.insertId });
   });
 });
 
