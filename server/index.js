@@ -7,13 +7,20 @@ const path = require("path");
 const cors = require("cors"); // Import CORS
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const app = express();
+
+// Enable CORS for all routes
+app.use(cors());
+
+// Serve static files from the 'uploads' directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(express.json()); // Add this line to parse JSON bodies
-app.use(cors()); // Enable CORS for all routes
+
+// Add this line to parse JSON bodies
+app.use(express.json());
+
 // Use body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
-// Serve static files from the 'uploads' directory
 
 var con = mysql.createConnection({
   host: "localhost",

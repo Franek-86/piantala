@@ -46,7 +46,11 @@ const Plant = () => {
     <div>
       <h1>Plant details</h1>
       <div>
-        <img className='plant-image' src={image_url} alt='' />
+        <img
+          className='plant-image'
+          src={`http://localhost:3001${image_url}`}
+          alt=''
+        />
       </div>
 
       <ul>
