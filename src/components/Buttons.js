@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { MdAdd } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
 import { BiMenu } from "react-icons/bi";
-
+import logo from "../assets/images/logo_albero_green.png";
 const Buttons = () => {
   // const addPlant = () => {
   //   console.log("add plant");
@@ -12,6 +12,9 @@ const Buttons = () => {
   return (
     <div className='section buttons-section'>
       <div className='leftButton'>
+        <div className='test1'>
+          <img src={logo} alt='' className='map-logo' />
+        </div>
         <Link className='circle-button' to='/map/addPlant'>
           <BiMenu />
         </Link>

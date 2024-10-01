@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import BottomBar from "./components/BottomBar";
 import { useNavigate } from "react-router-dom";
+import Loading from "./pages/Loading";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -17,10 +18,12 @@ L.Marker.prototype.options.icon = DefaultIcon;
 function App() {
   const [piante, setPiante] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get("http://localhost:3001/api/piantine");
         console.log(response);
@@ -28,12 +31,16 @@ function App() {
       } catch (err) {
         setError(err.message);
         console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
       }
     };
-    console.log(piante);
+
     fetchData();
   }, []);
-
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className='section map-section'>
       {/* 41.137379888248084, 16.867986684368702 */}

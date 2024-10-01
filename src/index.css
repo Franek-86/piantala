@@ -42,8 +42,8 @@ code {
 }
 /* buttons */
 .rightButtons {
-  top: 2rem;
-  right: 0.75rem;
+  top: 3rem;
+  right: 2.3rem;
   z-index: 1000;
   position: absolute;
   display: flex;
@@ -51,12 +51,20 @@ code {
   gap: 1rem;
 }
 .leftButton {
-  top: 2rem;
-  left: 0.75rem;
+  top: 3rem;
+  left: 2.3rem;
   z-index: 1000;
-  position: absolute;
+  position: relative;
 }
-
+.test1 {
+  position: absolute;
+  z-index: -1;
+  left: -1.9rem;
+  top: -2.6rem;
+}
+.map-logo {
+  width: 3.8rem;
+}
 /* bottom bar */
 
 /* add plant button */
@@ -90,4 +98,52 @@ code {
   object-fit: cover;
   width: 50vw;
   max-width: 15rem;
+}
+/* Loading.css */
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full screen height */
+  width: 100vw; /* Full screen width */
+  background-color: #f9f9f9; /* Optional background color */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999; /* Ensures it is on top of other elements */
+}
+
+.loading-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-logo {
+  width: 65px; /* Adjust the size of the logo */
+  height: auto;
+  z-index: 1; /* Ensures the logo stays on top of the spinner */
+}
+
+/* Spinner styling */
+.spinner {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 8px solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-top: 8px solid #0f7f32; /* Spinner color */
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  z-index: 0; /* Spinner behind the logo */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
