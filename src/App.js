@@ -1,6 +1,9 @@
 import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
 import icon from "leaflet/dist/images/tree.png";
+import iconGreen from "leaflet/dist/images/ti pianto per amore-APP-verde.png";
+import iconYellow from "leaflet/dist/images/ti pianto per amore-APP-giallo.png";
+import iconRed from "leaflet/dist/images/ti pianto per amore-APP-rosso.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import Buttons from "./components/Buttons";
 import { useState, useEffect } from "react";
@@ -9,12 +12,29 @@ import BottomBar from "./components/BottomBar";
 import { useNavigate } from "react-router-dom";
 import Loading from "./pages/Loading";
 
-let DefaultIcon = L.icon({
-  iconUrl: icon,
+// Set default icon
+const DefaultIcon = L.icon({
+  iconUrl: iconYellow, // This can be your default icon
   shadowUrl: iconShadow,
 });
-
 L.Marker.prototype.options.icon = DefaultIcon;
+
+// Define icon map without a default
+const iconMap = {
+  approved: L.icon({
+    iconUrl: iconGreen,
+    shadowUrl: iconShadow,
+  }),
+  pending: L.icon({
+    iconUrl: iconYellow,
+    // shadowUrl: iconShadow,
+    iconSize: [25, 41], // Adjust size here
+  }),
+  rejected: L.icon({
+    iconUrl: iconRed,
+    shadowUrl: iconShadow,
+  }),
+};
 function App() {
   const [piante, setPiante] = useState([]);
   const [error, setError] = useState(null);
@@ -38,6 +58,7 @@ function App() {
 
     fetchData();
   }, []);
+  console.log("bbbb", piante);
   if (loading) {
     return <Loading />;
   }
@@ -47,7 +68,7 @@ function App() {
       <article className='map'>
         <MapContainer
           center={[41.118778112249046, 16.871917818963464]}
-          zoom={13}
+          zoom={10}
           scrollWheelZoom={false}
           zoomControl={false}
         >
@@ -57,8 +78,14 @@ function App() {
           />
           <Buttons />
           {piante.map((e) => {
+            // Determine the icon based on some property in your data
+            const iconType = e.status_piantina; // Adjust this to match your data structure
+            console.log(iconType);
+            // const markerIcon = iconMap[iconType] || DefaultIcon;
+            const markerIcon = iconMap[iconType];
             return (
               <Marker
+                icon={markerIcon}
                 position={[e.lat, e.lang]}
                 key={e.id}
                 eventHandlers={{
