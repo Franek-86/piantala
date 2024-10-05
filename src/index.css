@@ -42,8 +42,8 @@ code {
 }
 /* buttons */
 .rightButtons {
-  top: 3rem;
-  right: 2.3rem;
+  top: 3.25rem;
+  right: 2rem;
   z-index: 1000;
   position: absolute;
   display: flex;
@@ -51,15 +51,15 @@ code {
   gap: 1rem;
 }
 .leftButton {
-  top: 3rem;
-  left: 2.3rem;
+  top: 4rem;
+  left: 3.3rem;
   z-index: 1000;
   position: relative;
 }
 .test1 {
   position: absolute;
   z-index: -1;
-  left: -1.9rem;
+  left: -1.8rem;
   top: -2.6rem;
 }
 .map-logo {
