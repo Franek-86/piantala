@@ -7,7 +7,7 @@ const path = require("path");
 const cors = require("cors"); // Import CORS
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const isAdmin = require("./middleware/isAdmin"); // Adjust the path as necessary
 const app = express();
 
 // Enable CORS for all routes
@@ -51,6 +51,24 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+// Example admin route to approve a user
+// app.patch("/api/approve-user/:userId", isAdmin, (req, res) => {
+//   const userId = req.params.userId;
+//   // Logic to approve the user goes here (e.g., updating the user's status in the database)
+
+//   const sql = "UPDATE users SET status = 'approved' WHERE user_id = ?"; // Adjust your SQL as necessary
+//   con.query(sql, [userId], (err, result) => {
+//     if (err) {
+//       console.log(err);
+//       return res.status(500).json({ message: "Server error" });
+//     }
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     res.status(200).json({ message: `User ${userId} approved successfully!` });
+//   });
+// });
 
 app.post("/api/pianta", upload.single("image"), (req, res) => {
   const { lat, lang, user_id } = req.body; // Extract lat, lang, user_id from the form
@@ -110,7 +128,8 @@ app.post("/api/register-user", async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(user_password, 10);
-    const sql = "INSERT INTO users (email, user_password) VALUES (?, ?)";
+    const sql =
+      "INSERT INTO users (email, user_password, role) VALUES (?, ?, 'user')"; // Default to 'user'
 
     con.query(sql, [email, hashedPassword], (err, result) => {
       if (err) {
@@ -118,17 +137,15 @@ app.post("/api/register-user", async (req, res) => {
         return res.status(500).send(err);
       }
 
-      // Only create token after successful database insertion
       const token = jwt.sign(
-        { id: result.insertId, email: email }, // Payload data (id, email, etc.)
-        "your_jwt_secret_key", // Secret key
-        { expiresIn: "1h" } // Expiration time
+        { id: result.insertId, email: email, role: "user" },
+        "your_jwt_secret_key",
+        { expiresIn: "1h" }
       );
 
-      // Send the token to the frontend
       res.status(201).json({
         message: "User registered successfully!",
-        token: token, // Send the token in the response
+        token,
       });
     });
   } catch (error) {
@@ -140,7 +157,6 @@ app.post("/api/register-user", async (req, res) => {
 app.post("/api/login", (req, res) => {
   const { email, user_password } = req.body;
 
-  // Query to find the user by email
   const sql = "SELECT * FROM users WHERE email = ?";
 
   con.query(sql, [email], async (err, result) => {
@@ -149,15 +165,12 @@ app.post("/api/login", (req, res) => {
       return res.status(500).json({ message: "Server error" });
     }
 
-    // Check if the user was found
     if (result.length === 0) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const user = result[0];
-    console.log("this", user);
 
-    // Compare the password with the hashed password from the database
     const passwordMatch = await bcrypt.compare(
       user_password,
       user.user_password
@@ -167,18 +180,16 @@ app.post("/api/login", (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // If login is successful, you can generate a token (JWT) for authentication
     const token = jwt.sign(
-      { id: user.user_id, email: user.email }, // Payload data (like user ID, etc.)
-      "your_jwt_secret_key", // Your secret key
-      { expiresIn: "1h" } // Token expiration time
+      { id: user.user_id, email: user.email, role: user.role },
+      "your_jwt_secret_key",
+      { expiresIn: "1h" }
     );
 
-    // Send back the token and user data if login is successful
     return res.status(200).json({
       message: "Login successful",
       token,
-      user: { id: user.user_id, email: user.email },
+      user: { id: user.user_id, email: user.email, role: user.role },
     });
   });
 });

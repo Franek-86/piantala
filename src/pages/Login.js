@@ -1,13 +1,12 @@
-// src/components/AuthForm.js
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../context/AuthContext";
 import { Form, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AuthForm = () => {
-  const { register: registerContextUser, login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -16,72 +15,77 @@ const AuthForm = () => {
   } = useForm();
   const [isRegister, setIsRegister] = useState(true); // Toggle between register/login
   const [serverError, setServerError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(false);
   const navigate = useNavigate();
 
   // Handle form submission
+  // const onSubmit = async (data) => {
+  //   const { email, password } = data;
+
+  //   try {
+  //     const endpoint = isRegister
+  //       ? "http://localhost:3001/api/register-user"
+  //       : "http://localhost:3001/api/login";
+
+  //     const response = await axios.post(endpoint, {
+  //       email,
+  //       user_password: password,
+  //     });
+
+  //     // Check for success status
+  //     if (response.status === (isRegister ? 201 : 200)) {
+  //       const { token } = response.data; // This should be present in a 200/201 response
+  //       localStorage.setItem("userToken", token); // Store the token
+  //       login(token); // Update context state
+
+  //       reset(); // Reset form fields
+  //       navigate("/map"); // Redirect to the map page
+  //     }
+  //   } catch (error) {
+  //     console.error(error); // Log the full error for debugging
+  //     setServerError(error.response?.data?.message || "Failed to authenticate");
+  //     setTimeout(() => {
+  //       setServerError("");
+  //     }, 3000); // Clear error message after 3 seconds
+  //   }
+  // };
   const onSubmit = async (data) => {
     const { email, password } = data;
 
-    if (isRegister) {
-      try {
-        // API call for registering the user
-        const response = await axios.post(
-          "http://localhost:3001/api/register-user",
-          {
-            email,
-            user_password: password, // Using 'user_password' to match backend
-          }
-        );
+    try {
+      const endpoint = isRegister
+        ? "http://localhost:3001/api/register-user"
+        : "http://localhost:3001/api/login";
 
-        if (response.status === 201) {
-          // Save the token in localStorage
-          const { token } = response.data; // Assuming your API sends the token in the response
-          localStorage.setItem("authToken", token); // Store the received token
-
-          // Optionally, update your AuthContext state to reflect that the user is authenticated
-          // setAuthState({ token, isAuthenticated: true });
-
-          // Redirect or show success message
-          console.log("User registered successfully!", token);
-        }
-
-        // Optionally use registerContextUser from context
-        // registerContextUser(email, password);
-
-        // setSuccessMessage("Registration successful!");
-        reset(); // Reset the form fields
-
-        setTimeout(() => {
-          setSuccessMessage("");
-          navigate("/map");
-        }, 3000); // Redirect after 3 seconds
-      } catch (error) {
-        setServerError(
-          error.response?.data?.message || "Failed to register user"
-        );
-        setTimeout(() => {
-          setServerError("");
-        }, 3000); // Clear error message after 3 seconds
-      }
-    } else {
-      const response = await axios.post("http://localhost:3001/api/login", {
+      const response = await axios.post(endpoint, {
         email,
-        user_password: password, // Using 'user_password' to match backend
+        user_password: password,
       });
-      if (response.status === 200) {
-        // Save the token in localStorage
-        const { token } = response.data; // Assuming your API sends the token in the response
-        localStorage.setItem("authToken", token); // Store the received token
 
-        // Optionally, update your AuthContext state to reflect that the user is authenticated
-        // setAuthState({ token, isAuthenticated: true });
+      if (response.status === (isRegister ? 201 : 200)) {
+        if (isRegister) {
+          // Registration was successful
+          setSuccessMessage("Registration successful! Please log in.");
+          reset(); // Reset form fields
+          setIsRegister(false); // Switch to login mode
 
-        // Redirect or show success message
-        console.log("User registered successfully!", token);
+          // Clear success message after 5 seconds
+          setTimeout(() => {
+            setSuccessMessage("");
+          }, 3000); // Adjust the duration as needed
+        } else {
+          // Login was successful
+          const { token } = response.data;
+          localStorage.setItem("userToken", token); // Store the token
+          login(token); // Update context state
+          navigate("/map"); // Redirect to the map page
+        }
       }
-
-      navigate("/map");
+    } catch (error) {
+      setServerError(error.response?.data?.message || "Failed to authenticate");
+      setTimeout(() => {
+        setServerError("");
+      }, 3000); // Clear error message after 3 seconds
     }
   };
 
@@ -89,8 +93,6 @@ const AuthForm = () => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       {/* Server error message */}
       {serverError && <p className='text-danger'>{serverError}</p>}
-
-      {/* Success message */}
       {successMessage && <p className='text-success'>{successMessage}</p>}
 
       <Form.Group className='mb-3' controlId='formBasicEmail'>

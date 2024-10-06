@@ -15,27 +15,20 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Mock function to register a user (you can replace with API call)
-  // const register = (email, password) => {
-  //   const token = `${email}-token`; // In real apps, this will come from your API
-  //   setUserToken(token);
-  //   localStorage.setItem("userToken", token);
-  // };
-
-  // Mock function to log in (you can replace with API call)
-  // const login = (email, password) => {
-  //   const token = `${email}-token`; // Same as registration token for simplicity
-  //   setUserToken(token);
-  //   localStorage.setItem("userToken", token);
-  // };
+  const login = (token) => {
+    setUserToken(token);
+    localStorage.setItem("userToken", token); // Store the token in localStorage
+  };
 
   const logout = () => {
     setUserToken(null);
     localStorage.removeItem("userToken");
   };
 
+  const isAuthenticated = !!userToken; // Convert token to boolean
+
   return (
-    <AuthContext.Provider value={{ userToken, logout }}>
+    <AuthContext.Provider value={{ userToken, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -12,6 +12,8 @@ import ErrorPage from "./pages/ErrorPage";
 import Plant from "./pages/Plant";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddPlant from "./pages/AddPlant";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,22 +21,28 @@ const router = createBrowserRouter([
   },
   {
     path: "/map",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     errorElement: <ErrorPage />,
-    // children: [
-    //   {
-    //     path: "map/:mapId",
-    //     element: <Plant />,
-    //   },
-    // ],
   },
   {
     path: "/map/addPlant",
-    element: <AddPlant />,
+    element: (
+      <ProtectedRoute>
+        <AddPlant />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "map/:plantId",
-    element: <Plant />,
+    element: (
+      <ProtectedRoute>
+        <Plant />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
