@@ -2,6 +2,7 @@
 const jwt = require("jsonwebtoken");
 
 const isAdmin = (req, res, next) => {
+  console.log("salve");
   const token = req.headers["authorization"]?.split(" ")[1]; // Get the token from the Authorization header
 
   if (!token) {

@@ -52,21 +52,55 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Example admin route to approve a user
-// app.patch("/api/approve-user/:userId", isAdmin, (req, res) => {
-//   const userId = req.params.userId;
-//   // Logic to approve the user goes here (e.g., updating the user's status in the database)
+app.patch("/api/piantine/:id/status", isAdmin, (req, res) => {
+  console.log("ciao");
+  const { id } = req.params; // Get the plant ID from the URL
+  const { status } = req.body; // Get the new status from the request body
 
-//   const sql = "UPDATE users SET status = 'approved' WHERE user_id = ?"; // Adjust your SQL as necessary
-//   con.query(sql, [userId], (err, result) => {
+  // Validate the status
+  if (status !== "approved" && status !== "rejected") {
+    return res.status(400).json({ message: "Invalid status" });
+  }
+
+  const sql = "UPDATE piantine SET status_piantina = ? WHERE id = ?";
+  con.query(sql, [status, id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: "Server error" });
+    }
+    if (result.affectedRows === 0) {
+      console.log(err);
+      return res.status(404).json({ message: "Plant not found" });
+    }
+    res
+      .status(200)
+      .json({ message: `Plant ${id} updated to ${status} successfully!` });
+  });
+});
+
+// app.patch("/api/piantine/:id/status", isAdmin, (req, res) => {
+//   console.log("ciao");
+//   const { id } = req.params; // Get the plant ID from the URL
+//   const { status } = req.body; // Get the new status from the request body
+
+//   // Validate the status
+//   if (status !== "approved" && status !== "rejected") {
+//     return res.status(400).json({ message: "Invalid status" });
+//   }
+
+//   const sql = "UPDATE piantine SET status_piantina = ? WHERE id = ?";
+//   con.query(sql, [status, id], (err, result) => {
 //     if (err) {
 //       console.log(err);
 //       return res.status(500).json({ message: "Server error" });
 //     }
 //     if (result.affectedRows === 0) {
-//       return res.status(404).json({ message: "User not found" });
+//       console.log(err);
+//       return res.status(404).json({ message: "Plant not found" });
 //     }
-//     res.status(200).json({ message: `User ${userId} approved successfully!` });
+//     res
+//       .status(200)
+//       .json({ message: `Plant ${id} updated to ${status} successfully!` });
 //   });
 // });
 
@@ -124,21 +158,25 @@ app.get("/api/piantine", (req, res) => {
 });
 
 app.post("/api/register-user", async (req, res) => {
-  const { email, user_password } = req.body;
+  const { email, user_password, role } = req.body;
+
+  // Validate role
+  const validRoles = ["user", "admin"];
+  const userRole = validRoles.includes(role) ? role : "user"; // Default to 'user' if invalid
 
   try {
     const hashedPassword = await bcrypt.hash(user_password, 10);
     const sql =
-      "INSERT INTO users (email, user_password, role) VALUES (?, ?, 'user')"; // Default to 'user'
+      "INSERT INTO users (email, user_password, role) VALUES (?, ?, ?)";
 
-    con.query(sql, [email, hashedPassword], (err, result) => {
+    con.query(sql, [email, hashedPassword, userRole], (err, result) => {
       if (err) {
         console.log(err);
         return res.status(500).send(err);
       }
 
       const token = jwt.sign(
-        { id: result.insertId, email: email, role: "user" },
+        { id: result.insertId, email: email, role: userRole },
         "your_jwt_secret_key",
         { expiresIn: "1h" }
       );
@@ -170,7 +208,7 @@ app.post("/api/login", (req, res) => {
     }
 
     const user = result[0];
-
+    console.log("this", user);
     const passwordMatch = await bcrypt.compare(
       user_password,
       user.user_password
