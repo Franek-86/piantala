@@ -1,5 +1,7 @@
 const express = require("express");
 var mysql = require("mysql");
+const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
 const PORT = process.env.PORT || 3001;
 const bodyParser = require("body-parser"); // Import body-parser
 const multer = require("multer");
@@ -22,12 +24,13 @@ app.use(express.json());
 // Use body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-var con = mysql.createConnection({
+const dbOptions = {
   host: "localhost",
   user: "root",
   password: "russel14",
   database: "ti_pianto_per_amore",
-});
+};
+const con = mysql.createConnection(dbOptions);
 
 con.connect(function (err) {
   if (err) throw err;
@@ -38,6 +41,21 @@ con.connect(function (err) {
   //   console.log(result);
   // });
 });
+
+const sessionStore = new MySQLStore({}, con);
+
+app.use(
+  session({
+    key: "user_sid",
+    secret: "your_secret_key", // Change this to a strong secret
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 600000, // Set cookie expiration time (in milliseconds)
+    },
+  })
+);
 
 // Configure multer to store files in 'uploads/' directory
 const storage = multer.diskStorage({
@@ -53,10 +71,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.patch("/api/piantine/:id/status", isAdmin, (req, res) => {
-  console.log("ciao");
   const { id } = req.params; // Get the plant ID from the URL
   const { status } = req.body; // Get the new status from the request body
-
+  console.log("test1.1", id, status);
   // Validate the status
   if (status !== "approved" && status !== "rejected") {
     return res.status(400).json({ message: "Invalid status" });
@@ -141,7 +158,6 @@ app.get("/api/data", (req, res) => {
       console.log(err);
       return res.status(500).send(err);
     }
-    console.log(results);
     res.json(results);
   });
 });
@@ -152,7 +168,6 @@ app.get("/api/piantine", (req, res) => {
       console.log(err);
       return res.status(500).send(err);
     }
-    console.log(results);
     res.json(results);
   });
 });
@@ -218,6 +233,9 @@ app.post("/api/login", (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    // Set user info in session
+    req.session.user = { id: user.user_id, email: user.email, role: user.role };
+
     const token = jwt.sign(
       { id: user.user_id, email: user.email, role: user.role },
       "your_jwt_secret_key",
@@ -245,6 +263,17 @@ app.delete("/api/piantine/:id", (req, res) => {
       return res.status(404).json({ message: "Item not found" });
     }
     res.json({ message: "Item deleted successfully!" });
+  });
+});
+
+app.post("/api/logout", (req, res) => {
+  // Implement your logout logic here
+  // For example, if you're using sessions, destroy the session
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Logout failed" });
+    }
+    res.status(200).json({ message: "Logged out successfully" });
   });
 });
 app.listen(PORT, () => {

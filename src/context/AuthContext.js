@@ -6,13 +6,15 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
-
+  const [loading, setLoading] = useState(true); // New loading state
   // On app load, check localStorage for a token
   useEffect(() => {
     const token = localStorage.getItem("userToken");
+    console.log("hdwgcvegycvyewgqcvgv", token);
     if (token) {
       setUserToken(token);
     }
+    setLoading(false); // Set loading to false after checking
   }, []);
 
   const login = (token) => {
@@ -26,9 +28,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const isAuthenticated = !!userToken; // Convert token to boolean
-
+  console.log(isAuthenticated);
   return (
-    <AuthContext.Provider value={{ userToken, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ userToken, isAuthenticated, login, logout, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

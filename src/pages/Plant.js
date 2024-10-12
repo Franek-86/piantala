@@ -28,12 +28,18 @@ const Plant = () => {
   }, [plantId]);
 
   const handleStatusChange = async (newStatus) => {
+    const token = localStorage.getItem("userToken"); // Retrieve the token from localStorage
     console.log(newStatus, plantId);
     try {
       await axios.patch(
         `http://localhost:3001/api/piantine/${plantId}/status`,
         {
           status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
         }
       );
       setPlant((prevPlant) => ({ ...prevPlant, status_piantina: newStatus }));

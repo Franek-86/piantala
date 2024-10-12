@@ -4,7 +4,7 @@ import icon from "leaflet/dist/images/tree.png";
 import iconGreen from "leaflet/dist/images/ti pianto per amore-APP-verde.png";
 import iconYellow from "leaflet/dist/images/ti pianto per amore-APP-giallo.png";
 import iconRed from "leaflet/dist/images/ti pianto per amore-APP-rosso.png";
-import iconShadow from "leaflet/dist/images/marker-shadow.png";
+// import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import Buttons from "./components/Buttons";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -15,7 +15,7 @@ import Loading from "./pages/Loading";
 // Set default icon
 const DefaultIcon = L.icon({
   iconUrl: iconYellow, // This can be your default icon
-  shadowUrl: iconShadow,
+  // shadowUrl: iconShadow,
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
@@ -23,7 +23,8 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const iconMap = {
   approved: L.icon({
     iconUrl: iconGreen,
-    shadowUrl: iconShadow,
+    // shadowUrl: iconShadow,
+    iconSize: [25, 41], // Adjust size here
   }),
   pending: L.icon({
     iconUrl: iconYellow,
@@ -32,7 +33,8 @@ const iconMap = {
   }),
   rejected: L.icon({
     iconUrl: iconRed,
-    shadowUrl: iconShadow,
+    // shadowUrl: iconShadow,
+    iconSize: [25, 41], // Adjust size here
   }),
 };
 function App() {

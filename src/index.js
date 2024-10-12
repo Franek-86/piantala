@@ -13,6 +13,7 @@ import Plant from "./pages/Plant";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddPlant from "./pages/AddPlant";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MyPlants from "./pages/MyPlants";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Plant />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "map/myPlants",
+    element: (
+      <ProtectedRoute>
+        <MyPlants />
       </ProtectedRoute>
     ),
   },
