@@ -12,7 +12,7 @@ const Plant = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3001/api/piantine");
+        const response = await axios.get("http://localhost:3001/api/plants");
         const item = response.data.find(
           (item) => item.id === parseInt(plantId)
         );
@@ -32,7 +32,7 @@ const Plant = () => {
     console.log(newStatus, plantId);
     try {
       await axios.patch(
-        `http://localhost:3001/api/piantine/${plantId}/status`,
+        `http://localhost:3001/api/plants/${plantId}/status`,
         {
           status: newStatus,
         },

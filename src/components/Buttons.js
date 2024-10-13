@@ -16,7 +16,7 @@ const Buttons = () => {
   };
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3001/api/logout"); // Your logout endpoint
+      await axios.post("http://localhost:3001/api/auth/logout"); // Your logout endpoint
       // Clear any user-related data from localStorage or context
       localStorage.removeItem("userToken"); // Adjust based on how you store the token
       navigate("/"); // Redirect to the login page

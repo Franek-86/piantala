@@ -47,7 +47,7 @@ function App() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:3001/api/piantine");
+        const response = await axios.get("http://localhost:3001/api/plants");
         console.log(response);
         setPiante(response.data);
       } catch (err) {

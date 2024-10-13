@@ -54,8 +54,8 @@ const AuthForm = () => {
 
     try {
       const endpoint = isRegister
-        ? "http://localhost:3001/api/register-user"
-        : "http://localhost:3001/api/login";
+        ? "http://localhost:3001/api/auth/register-user"
+        : "http://localhost:3001/api/auth/login";
 
       const response = await axios.post(endpoint, {
         email,

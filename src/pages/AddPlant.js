@@ -81,7 +81,7 @@ const AddPlant = () => {
     try {
       // Make a POST request to the API
       const response = await axios.post(
-        "http://localhost:3001/api/pianta",
+        "http://localhost:3001/api/plant",
         formData,
         {
           headers: {
