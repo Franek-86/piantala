@@ -20,6 +20,8 @@ const AddPlant = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate(); // For navigation
   useEffect(() => {
+    const token = localStorage.getItem("userToken"); // Move token retrieval inside useEffect
+
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -31,6 +33,7 @@ const AddPlant = () => {
         return;
       }
     }
+    console.log("checker", userId);
   }, [userId]);
   const token = localStorage.getItem("authToken");
 
@@ -81,7 +84,7 @@ const AddPlant = () => {
     try {
       // Make a POST request to the API
       const response = await axios.post(
-        "http://localhost:3001/api/plant",
+        "http://localhost:3001/api/plants/add-plant",
         formData,
         {
           headers: {

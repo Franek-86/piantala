@@ -26,6 +26,7 @@ exports.addPlant = (req, res) => {
     "INSERT INTO piantine (lat, lang, image_url, user_id) VALUES (?, ?, ?, ?)";
 
   con.query(sql, [lat, lang, image_url, user_id], (err, result) => {
+    console.log("yo", user_id);
     if (err) {
       console.log(err);
       return res.status(500).send(err);
@@ -67,17 +68,14 @@ exports.updateStatus = (req, res) => {
 
 exports.getUserPlants = (req, res) => {
   console.log("ciao");
+  const { userId } = req.query;
   // first get the id from local storage and set in in a varialble here
   const sql = "SELECT * FROM piantine WHERE user_id = ?";
-  con.query(
-    sql,
-    "[ // first get the id from local storage]",
-    (err, results) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      res.json(results);
+  con.query(sql, userId, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
     }
-  );
+    res.json(results);
+  });
 };
