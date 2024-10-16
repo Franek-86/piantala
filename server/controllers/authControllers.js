@@ -4,7 +4,7 @@ const con = require("../config/db");
 
 exports.registerUser = async (req, res) => {
   const { email, user_password, role } = req.body;
-
+  console.log("aaaaab");
   // Validate role
   const validRoles = ["user", "admin"];
   const userRole = validRoles.includes(role) ? role : "user"; // Default to 'user' if invalid

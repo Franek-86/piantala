@@ -14,11 +14,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/uploads", express.static("uploads"));
-// const path = require("path");
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ---------
-// ---------
 // ---------
 const sessionStore = new MySQLStore({}, require("./config/db"));
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { MdAdd } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
+import { MdCenterFocusStrong } from "react-icons/md";
 import { BiMenu } from "react-icons/bi";
 import logo from "../assets/images/logo_albero_green.png";
 import SideMenu from "./SideMenu";
@@ -50,6 +51,9 @@ const Buttons = () => {
         </Link>
         <Link className='circle-button' href='tel:00393485384563'>
           <MdLocalPhone />
+        </Link>
+        <Link className='circle-button'>
+          <MdCenterFocusStrong />
         </Link>
       </div>
       {/* Include the SideMenu component */}
