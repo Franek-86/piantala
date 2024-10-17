@@ -13,12 +13,80 @@ code {
 }
 @import url("~leaflet/dist/leaflet.css");
 
-/* tree */
-.leaflet-container .leaflet-marker-pane img {
-  width: 74px;
+/* -----------------------------------------globals--------------------------------------------------- */
+
+:root {
+  --clr-primary-0: #e7f2eb;
+  --clr-primary-1: #b7d9c2;
+  --clr-primary-2: #87bf99;
+  --clr-primary-3: #6fb284;
+  --clr-primary-4: #3f995b;
+  --clr-primary-5: #0f7f32;
+  --clr-primary-6: #0e722d;
+  --clr-primary-7: #0b5923;
+  --clr-primary-8: #084019;
+  --clr-primary-9: #04260f;
+  --clr-primary-10: #010d05;
 }
 
-/* map section */
+.btn-primary {
+  --bs-btn-bg: #0f7f32; /* New background color */
+  --bs-btn-border-color: #0f7f32; /* New border color */
+  --bs-btn-hover-bg: #0e7a2f; /* Optional: change hover background color */
+  --bs-btn-hover-border-color: #0d6a2e; /* Optional: change hover border color */
+  --bs-btn-active-bg: #0d6a2e; /* Optional: change active background color */
+  --bs-btn-active-border-color: #0c5c2d; /* Optional: change active border color */
+}
+.btn-link {
+  --bs-btn-color: #0f7f32; /* New text color */
+  --bs-btn-hover-color: #0d6a2e; /* Optional: change hover text color */
+  --bs-btn-active-color: #0c5c2d; /* Optional: change active text color */
+  --bs-btn-disabled-color: #6c757d; /* Adjust as needed */
+  --bs-btn-focus-shadow-rgb: 49, 132, 253; /* Keep focus shadow RGB if needed */
+  /* You can also adjust other properties if needed */
+}
+.form-control:focus {
+  color: #0f7f32; /* New text color */
+  background-color: #ffffff; /* Optional: change background color if needed */
+  border-color: #0f7f32; /* New border color */
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(15, 127, 50, 0.25); /* Adjust shadow color */
+}
+
+/*----------------------------------------- login section----------------------------------------------- */
+
+.login-section {
+  height: 100vh;
+  max-width: 90vw;
+  margin: 0 auto;
+  place-items: center;
+  display: grid;
+}
+.form-container {
+  background: var(--clr-primary-0);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  border: 2px solid var(--clr-primary-2);
+}
+small.text-muted.ms-3.form-text {
+  margin-left: 0px !important;
+  display: block;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  .form-container {
+    min-width: 40vw;
+    padding: 3rem;
+    border: 2px solid var(--clr-primary-2);
+  }
+  small.text-muted.ms-3.form-text {
+    margin-left: 1rem !important;
+    display: inline-block;
+    margin-top: 2rem;
+  }
+}
+/* ---------------------------------------------map section------------------------------------------------------------ */
 
 .map-section {
   display: flex;
@@ -39,6 +107,11 @@ code {
   height: 10vh;
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
   z-index: 1000;
+}
+
+/* tree */
+.leaflet-container .leaflet-marker-pane img {
+  width: 74px;
 }
 /* buttons */
 .rightButtons {
@@ -109,7 +182,7 @@ code {
   width: 50vw;
   max-width: 15rem;
 }
-/* Loading.css */
+/* ----------------------------------------------------Loading.css--------------------------------------------- */
 
 .loading-container {
   display: flex;
@@ -157,7 +230,7 @@ code {
     transform: rotate(360deg);
   }
 }
-
+/* ------------------------------------------------menu------------------------------------------------- */
 /* Add this CSS to your styles */
 .offcanvas {
   width: 50% !important; /* Set the width to 75% */

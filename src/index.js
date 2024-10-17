@@ -1,16 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-
-import "./index.css";
 import Login from "./pages/Login";
 import ErrorPage from "./pages/ErrorPage";
 import Plant from "./pages/Plant";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
 import AddPlant from "./pages/AddPlant";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MyPlants from "./pages/MyPlants";

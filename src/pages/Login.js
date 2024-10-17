@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../context/AuthContext";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, FloatingLabel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 const AuthForm = () => {
@@ -90,58 +91,73 @@ const AuthForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      {/* Server error message */}
-      {serverError && <p className='text-danger'>{serverError}</p>}
-      {successMessage && <p className='text-success'>{successMessage}</p>}
+    <section className='login-section'>
+      <article className='form-container'>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          {/* Server error message */}
+          {serverError && <p className='text-danger'>{serverError}</p>}
+          {successMessage && <p className='text-success'>{successMessage}</p>}
 
-      <Form.Group className='mb-3' controlId='formBasicEmail'>
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          type='email'
-          placeholder='Enter email'
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Invalid email format",
-            },
-          })}
-        />
-        {errors.email && (
-          <span className='text-danger'>{errors.email.message}</span>
-        )}
-      </Form.Group>
+          <Form.Group className='mb-3' controlId='formBasicEmail'>
+            <FloatingLabel
+              controlId='floatingInput'
+              label='Email address'
+              className='mb-3'
+            >
+              <Form.Control
+                type='email'
+                placeholder='Enter email'
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email format",
+                  },
+                })}
+              />
+            </FloatingLabel>
 
-      <Form.Group className='mb-3' controlId='formBasicPassword'>
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type='password'
-          placeholder='Password'
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 6,
-              message: "Password must be at least 6 characters long",
-            },
-          })}
-        />
-        {errors.password && (
-          <span className='text-danger'>{errors.password.message}</span>
-        )}
-      </Form.Group>
+            {errors.email && (
+              <span className='text-danger'>{errors.email.message}</span>
+            )}
+          </Form.Group>
 
-      <Button variant='primary' type='submit'>
-        {isRegister ? "Register" : "Login"}
-      </Button>
+          <Form.Group className='mb-3' controlId='formBasicPassword'>
+            <FloatingLabel controlId='floatingPassword' label='Password'>
+              <Form.Control
+                type='password'
+                placeholder='Password'
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters long",
+                  },
+                })}
+              />
+            </FloatingLabel>
+            {errors.password && (
+              <span className='text-danger'>{errors.password.message}</span>
+            )}
+          </Form.Group>
 
-      <Form.Text className='text-muted'>
-        {isRegister ? "Already have an account?" : "Don't have an account?"}
-        <Button variant='link' onClick={() => setIsRegister(!isRegister)}>
-          {isRegister ? "Login" : "Register"}
-        </Button>
-      </Form.Text>
-    </Form>
+          <Button variant='primary' type='submit'>
+            {isRegister ? "Register" : "Login"}
+          </Button>
+
+          <Form.Text className='text-muted ms-3'>
+            {isRegister ? "Already have an account?" : "Don't have an account?"}
+            <Button
+              className='pt-1'
+              variant='link'
+              onClick={() => setIsRegister(!isRegister)}
+            >
+              {isRegister ? "Login" : "Register"}
+            </Button>
+          </Form.Text>
+        </Form>
+      </article>
+    </section>
   );
 };
 
