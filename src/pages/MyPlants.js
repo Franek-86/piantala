@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "./Loading";
+import BottomBar from "../components/BottomBar";
 
 const MyPlants = () => {
   const [myPlants, setMyPlants] = useState([]);
@@ -57,53 +58,56 @@ const MyPlants = () => {
   };
 
   return (
-    <section className='section-page'>
-      <div className='d-flex justify-content-between'>
-        <h1>Le mie segnalazioni</h1>
-        <div style={{ textAlign: "right", marginBottom: "10px" }}>
-          <Button variant='link'>
-            <Link to={`/map`} style={{ textDecoration: "none" }}>
-              <i className='fas fa-arrow-left'></i> Go to map
-            </Link>
-          </Button>
+    <>
+      <section className='section-page'>
+        <div className='d-flex justify-content-between'>
+          <h1>Le mie segnalazioni</h1>
+          <div style={{ textAlign: "right", marginBottom: "10px" }}>
+            <Button variant='link'>
+              <Link to={`/map`} style={{ textDecoration: "none" }}>
+                <i className='fas fa-arrow-left'></i> Go to map
+              </Link>
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {loading ? (
-        <Loading />
-      ) : myPlants.length === 0 ? (
-        <p>You have no plants.</p>
-      ) : (
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Latitude</th>
-              <th>Longitude</th>
-              <th>Status</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myPlants.map((plant) => (
-              <tr key={plant.id}>
-                <td>
-                  <img
-                    src={`http://localhost:3001${plant.image_url}`}
-                    alt={`Plant ${plant.id}`}
-                    style={{ width: "50px" }}
-                  />
-                </td>
-                <td>{plant.lat}</td>
-                <td>{plant.lang}</td>
-                <td>{renderStatusIndicator(plant.status_piantina)}</td>
-                <td>{new Date(plant.created_at).toLocaleString()}</td>
+        {loading ? (
+          <Loading />
+        ) : myPlants.length === 0 ? (
+          <p>You have no plants.</p>
+        ) : (
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Status</th>
+                <th>Created At</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </section>
+            </thead>
+            <tbody>
+              {myPlants.map((plant) => (
+                <tr key={plant.id}>
+                  <td>
+                    <img
+                      src={`http://localhost:3001${plant.image_url}`}
+                      alt={`Plant ${plant.id}`}
+                      style={{ width: "50px" }}
+                    />
+                  </td>
+                  <td>{plant.lat}</td>
+                  <td>{plant.lang}</td>
+                  <td>{renderStatusIndicator(plant.status_piantina)}</td>
+                  <td>{new Date(plant.created_at).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+      <BottomBar />
+    </>
   );
 };
 

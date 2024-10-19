@@ -28,7 +28,7 @@ const SideMenu = ({ showMenu, toggleMenu, onLogout }) => {
             </button>
           </li>
           <li>
-            <Link to='myPlants' onClick={toggleMenu}>
+            <Link to='/myPlants' onClick={toggleMenu}>
               Link 2
             </Link>
           </li>

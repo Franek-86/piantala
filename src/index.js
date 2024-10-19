@@ -16,15 +16,6 @@ import Legend from "./pages/Legend";
 import Info from "./pages/Info";
 import BottomBar from "./components/BottomBar";
 
-const Layout = () => {
-  return (
-    <div>
-      <Outlet /> {/* Renderizza il contenuto della pagina qui */}
-      <BottomBar />
-    </div>
-  );
-};
-
 // Configurazione delle rotte
 const router = createBrowserRouter([
   {
@@ -35,15 +26,11 @@ const router = createBrowserRouter([
     path: "/map",
     element: (
       <ProtectedRoute>
-        <Layout /> {/* Utilizza Layout per le rotte protette */}
+        <App />
       </ProtectedRoute>
     ),
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "", // Questa può essere la tua pagina di default
-        element: <App />, // Mostra l'App qui
-      },
       {
         path: "addPlant",
         element: <AddPlant />,
@@ -52,19 +39,19 @@ const router = createBrowserRouter([
         path: ":plantId",
         element: <Plant />,
       },
-      {
-        path: "myPlants",
-        element: <MyPlants />,
-      },
-      {
-        path: "legend",
-        element: <Legend />,
-      },
-      {
-        path: "info",
-        element: <Info />,
-      },
     ],
+  },
+  {
+    path: "myPlants",
+    element: <MyPlants />,
+  },
+  {
+    path: "legend",
+    element: <Legend />,
+  },
+  {
+    path: "info",
+    element: <Info />,
   },
 ]);
 

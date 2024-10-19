@@ -46,7 +46,7 @@ const Buttons = () => {
       <IoAdd />
       <MdAdd /> */}
         {/* <button onClick={() => addPlant()}>add</button> */}
-        <Link className='circle-button' to='/map/addPlant'>
+        <Link className='circle-button' to='addPlant'>
           <MdAdd />
         </Link>
         <Link className='circle-button' href='tel:00393485384563'>

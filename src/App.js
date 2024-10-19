@@ -9,7 +9,7 @@ import Buttons from "./components/Buttons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BottomBar from "./components/BottomBar";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Loading from "./pages/Loading";
 
 // Set default icon
@@ -42,6 +42,7 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,54 +62,63 @@ function App() {
     fetchData();
   }, []);
   console.log("bbbb", piante);
+  const isChildRoute = location.pathname.includes("/map/");
   if (loading) {
     return <Loading />;
   }
   return (
-    <div className='section map-section'>
-      {/* 41.137379888248084, 16.867986684368702 */}
-      <article className='map'>
-        <MapContainer
-          center={[41.118778112249046, 16.871917818963464]}
-          zoom={10}
-          scrollWheelZoom={false}
-          zoomControl={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-          />
-          <Buttons />
-          {piante.map((e) => {
-            // Determine the icon based on some property in your data
-            const iconType = e.status_piantina; // Adjust this to match your data structure
-            console.log(iconType);
-            // const markerIcon = iconMap[iconType] || DefaultIcon;
-            const markerIcon = iconMap[iconType];
-            return (
-              <Marker
-                icon={markerIcon}
-                position={[e.lat, e.lang]}
-                key={e.id}
-                eventHandlers={{
-                  click: () => {
-                    console.log("marker clicked");
-                    navigate(`/map/${e.id}`);
-                  },
-                }}
+    <>
+      {!isChildRoute && (
+        <>
+          <div className='section map-section'>
+            {/* 41.137379888248084, 16.867986684368702 */}
+            <article className='map'>
+              <MapContainer
+                center={[41.118778112249046, 16.871917818963464]}
+                zoom={10}
+                scrollWheelZoom={false}
+                zoomControl={false}
               >
-                {/* <Popup>
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+                />
+                <Buttons />
+                {piante.map((e) => {
+                  // Determine the icon based on some property in your data
+                  const iconType = e.status_piantina; // Adjust this to match your data structure
+                  console.log(iconType);
+                  // const markerIcon = iconMap[iconType] || DefaultIcon;
+                  const markerIcon = iconMap[iconType];
+                  return (
+                    <Marker
+                      icon={markerIcon}
+                      position={[e.lat, e.lang]}
+                      key={e.id}
+                      eventHandlers={{
+                        click: () => {
+                          console.log("marker clicked");
+                          navigate(`/map/${e.id}`);
+                        },
+                      }}
+                    >
+                      {/* <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup> */}
-              </Marker>
-            );
-          })}
-        </MapContainer>
-      </article>
-      {/* <article className='bottom-bar'>
+                    </Marker>
+                  );
+                })}
+              </MapContainer>
+            </article>
+            {/* <article className='bottom-bar'>
         <BottomBar />
       </article> */}
-    </div>
+          </div>
+          <BottomBar />
+        </>
+      )}
+      <Outlet />
+    </>
   );
 }
 

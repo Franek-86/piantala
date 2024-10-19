@@ -33,7 +33,7 @@ const BottomBar = () => {
           </li>
           <li className='fs-5'>
             <NavLink
-              to='legend'
+              to='/legend'
               className={({ isActive }) =>
                 isActive ? "text-primary" : "text-dark"
               }
@@ -43,7 +43,7 @@ const BottomBar = () => {
           </li>
           <li className='fs-5'>
             <NavLink
-              to='myPlants'
+              to='/myPlants'
               className={({ isActive }) =>
                 isActive ? "text-primary" : "text-dark"
               }
@@ -53,7 +53,7 @@ const BottomBar = () => {
           </li>
           <li className='fs-5'>
             <NavLink
-              to='info'
+              to='/info'
               className={({ isActive }) =>
                 isActive ? "text-primary" : "text-dark"
               }
