@@ -52,6 +52,15 @@ code {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(15, 127, 50, 0.25); /* Adjust shadow color */
 }
+.text-primary {
+  color: var(--clr-primary-5) !important;
+}
+a {
+  color: gray;
+}
+.section-page {
+  height: 90vh;
+}
 
 /*----------------------------------------- login section----------------------------------------------- */
 
@@ -91,7 +100,7 @@ small.text-muted.ms-3.form-text {
 .map-section {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 90vh;
   position: relative;
 }
 .map {

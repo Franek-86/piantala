@@ -57,7 +57,7 @@ const MyPlants = () => {
   };
 
   return (
-    <div>
+    <section className='section-page'>
       <div className='d-flex justify-content-between'>
         <h1>Le mie segnalazioni</h1>
         <div style={{ textAlign: "right", marginBottom: "10px" }}>
@@ -103,7 +103,7 @@ const MyPlants = () => {
           </tbody>
         </table>
       )}
-    </div>
+    </section>
   );
 };
 

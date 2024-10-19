@@ -105,9 +105,9 @@ function App() {
           })}
         </MapContainer>
       </article>
-      <article className='bottom-bar'>
+      {/* <article className='bottom-bar'>
         <BottomBar />
-      </article>
+      </article> */}
     </div>
   );
 }
