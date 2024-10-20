@@ -55,30 +55,54 @@ const Plant = () => {
   const { lat, lang, image_url, status_piantina } = plant;
 
   return (
-    <div>
-      <h1>Plant details</h1>
-      <div>
-        <img
-          className='plant-image'
-          src={`http://localhost:3001${image_url}`}
-          alt=''
-        />
+    <section className='section-background plant-section'>
+      <div className='section-center'>
+        <h2 className='section-title'>Informazioni piantina</h2>
+
+        <ul>
+          <li>
+            <div className='d-flex align-items-center'>
+              <span>image:</span>
+              <div
+                className='plant-picture'
+                style={{
+                  // backgroundColor: "red",
+                  backgroundImage: `url("http://localhost:3001${image_url}")`,
+                  backgroundColor: "red",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                }}
+              >
+                {/* <img
+            className='plant-image'
+            src={`http://localhost:3001${image_url}`}
+            alt=''
+          /> */}
+              </div>
+            </div>
+          </li>
+          <li>
+            <span>Lat:</span> <span>{lat}</span>
+          </li>
+          <li>
+            <span>Lang:</span> <span>{lang}</span>
+          </li>
+          <li>
+            <span>Stato:</span> <span>{status_piantina}</span>
+          </li>
+        </ul>
+        <div className='admin-controls mt-5'>
+          <button onClick={() => handleStatusChange("approved")}>
+            Approve
+          </button>
+          <button onClick={() => handleStatusChange("rejected")}>Reject</button>
+        </div>
+        <Link className='d-block' to={"/map"}>
+          Go back
+        </Link>
       </div>
-      <ul>
-        <li>
-          <span>Lat:</span> <span>{lat}</span>
-        </li>
-        <li>
-          <span>Lang:</span> <span>{lang}</span>
-        </li>
-        <li>
-          <span>Status:</span> <span>{status_piantina}</span>
-        </li>
-      </ul>
-      <button onClick={() => handleStatusChange("approved")}>Approve</button>
-      <button onClick={() => handleStatusChange("rejected")}>Reject</button>
-      <Link to={"/map"}>Go back</Link>
-    </div>
+    </section>
   );
 };
 

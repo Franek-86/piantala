@@ -1,10 +1,7 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Montserrat", sans-serif;
+  color: var(--c-text-light-1);
 }
 
 code {
@@ -27,6 +24,9 @@ code {
   --clr-primary-8: #084019;
   --clr-primary-9: #04260f;
   --clr-primary-10: #010d05;
+  --c-text-light-1: #2c3e50;
+  --c-text-light-2: #476582;
+  --c-text-light-3: #90a4b7;
 }
 
 .btn-primary {
@@ -58,10 +58,34 @@ code {
 a {
   color: gray;
 }
+
+ul li {
+  list-style-type: none;
+}
+ul {
+  padding: 0;
+}
 .section-page {
   height: 90vh;
 }
-
+.section-background {
+  background-color: var(--clr-primary-0);
+}
+.section-center {
+  width: 90vw;
+  margin: 0 auto;
+}
+.section-title {
+  text-align: center;
+  text-transform: capitalize;
+  margin-bottom: 3rem;
+  padding-top: 1rem;
+}
+h1,
+h2,
+h3 {
+  color: var(--c-text-light-1);
+}
 /*----------------------------------------- login section----------------------------------------------- */
 
 .login-section {
@@ -184,13 +208,7 @@ small.text-muted.ms-3.form-text {
   width: 24px; /* Icon size */
   height: 24px; /* Icon size */
 }
-/* sinle plant */
 
-.plant-image {
-  object-fit: cover;
-  width: 50vw;
-  max-width: 15rem;
-}
 /* ----------------------------------------------------Loading.css--------------------------------------------- */
 
 .loading-container {
@@ -247,4 +265,57 @@ small.text-muted.ms-3.form-text {
 
 .offcanvas.show {
   display: block; /* Ensure it is displayed when showing */
+}
+/* ------------------------------------------------legend section------------------------------------------- */
+
+.plants-list {
+  margin-bottom: 2rem;
+}
+.legend-image {
+  min-width: 5.5rem;
+  height: 5.5rem;
+  border: 3px solid;
+  display: inline-block;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.legend-image.approved {
+  border-color: #6b8f00;
+}
+.legend-image.pending {
+  border-color: #995c00;
+}
+.legend-image.rejected {
+  border-color: #b32400;
+}
+.legend-image img {
+  width: 2rem;
+}
+.legend-box-container {
+  display: flex;
+  align-items: center;
+}
+.legend-description {
+  padding-left: 1rem;
+  text-transform: capitalize;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* #99cc00 99CC00	8AB800	7AA300	6B8F00	5C7A00	4D6600	3D5200	2E3D00	1F2900	0F1400	000000 */
+/* FF9900	E68A00	CC7A00	B36B00	995C00	804D00	663D00	4C2E00	331F00	190F00	000000*/
+/*FF3300	FF3300	E62E00	CC2900	B32400	991F00	801A00	661400	4C0F00	330A00	190500	000000 */
+
+/*-------------------------------plant section----------------------------- */
+.plant-section {
+  height: 100vh;
+  position: relative;
+}
+.plant-picture {
+  border: 2px solid var(--clr-primary-5);
+  width: 10rem;
+  height: 10rem;
+  border-radius: 15px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
 }
