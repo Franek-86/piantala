@@ -62,7 +62,7 @@ const Plant = () => {
         <ul>
           <li>
             <div className='d-flex align-items-center'>
-              <span>image:</span>
+              {/* <span>image:</span>
               <div
                 className='plant-picture'
                 style={{
@@ -74,13 +74,15 @@ const Plant = () => {
                   backgroundSize: "cover",
                 }}
               >
-                {/* <img
-            className='plant-image'
-            src={`http://localhost:3001${image_url}`}
-            alt=''
-          /> */}
-              </div>
+              </div> */}
             </div>
+          </li>
+          <li>
+            <span>image:</span>{" "}
+            <span>
+              {" "}
+              <a href={`http://localhost:3001${image_url}`}>piantina</a>{" "}
+            </span>
           </li>
           <li>
             <span>Lat:</span> <span>{lat}</span>
