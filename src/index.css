@@ -1,0 +1,470 @@
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  color: var(--c-text-light-1);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+@import url("~leaflet/dist/leaflet.css");
+
+/* -----------------------------------------globals--------------------------------------------------- */
+
+:root {
+  --clr-primary-0: #e7f2eb;
+  --clr-primary-1: #b7d9c2;
+  --clr-primary-2: #87bf99;
+  --clr-primary-3: #6fb284;
+  --clr-primary-4: #3f995b;
+  --clr-primary-5: #0f7f32;
+  --clr-primary-6: #0e722d;
+  --clr-primary-7: #0b5923;
+  --clr-primary-8: #084019;
+  --clr-primary-9: #04260f;
+  --clr-primary-10: #010d05;
+  --c-text-light-1: #2c3e50;
+  --c-text-light-2: #476582;
+  --c-text-light-3: #90a4b7;
+  --radius: 0.5rem;
+}
+
+.btn-primary {
+  --bs-btn-bg: #0f7f32; /* New background color */
+  --bs-btn-border-color: #0f7f32; /* New border color */
+  --bs-btn-hover-bg: #0e7a2f; /* Optional: change hover background color */
+  --bs-btn-hover-border-color: #0d6a2e; /* Optional: change hover border color */
+  --bs-btn-active-bg: #0d6a2e; /* Optional: change active background color */
+  --bs-btn-active-border-color: #0c5c2d; /* Optional: change active border color */
+}
+.btn-outline-primary {
+  --bs-btn-color: #0f7f32;
+  --bs-btn-border-color: #0f7f32;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #0f7f32;
+  --bs-btn-hover-border-color: #0f7f32;
+  --bs-btn-focus-shadow-rgb: 13, 110, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #0f7f32;
+  --bs-btn-active-border-color: #0f7f32;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #0f7f32;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #0f7f32;
+  --bs-gradient: none;
+}
+.btn-link {
+  --bs-btn-color: #0f7f32; /* New text color */
+  --bs-btn-hover-color: #0d6a2e; /* Optional: change hover text color */
+  --bs-btn-active-color: #0c5c2d; /* Optional: change active text color */
+  --bs-btn-disabled-color: #6c757d; /* Adjust as needed */
+  --bs-btn-focus-shadow-rgb: 49, 132, 253; /* Keep focus shadow RGB if needed */
+  /* You can also adjust other properties if needed */
+}
+.form-control:focus {
+  color: #0f7f32; /* New text color */
+  background-color: #ffffff; /* Optional: change background color if needed */
+  border-color: #0f7f32; /* New border color */
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(15, 127, 50, 0.25); /* Adjust shadow color */
+}
+.text-primary {
+  color: var(--clr-primary-5) !important;
+}
+a {
+  color: gray;
+}
+
+ul li {
+  list-style-type: none;
+}
+ul {
+  padding: 0;
+}
+.section-page {
+  height: 90vh;
+}
+.section-full-page {
+  height: 100vh;
+}
+.section-background {
+  background-color: var(--clr-primary-0);
+}
+.section-center {
+  width: 90vw;
+  margin: 0 auto;
+}
+.section-title {
+  text-align: center;
+  text-transform: capitalize;
+  margin-bottom: 3rem;
+  padding-top: 1rem;
+}
+h1,
+h2,
+h3 {
+  color: var(--c-text-light-1);
+}
+.bg-success {
+  background-color: #0f7f32 !important;
+}
+.bg-warning {
+  background-color: #ff9900 !important;
+}
+
+/*----------------------------------------- login section----------------------------------------------- */
+
+.login-section {
+  height: 100vh;
+  max-width: 90vw;
+  margin: 0 auto;
+  place-items: center;
+  display: grid;
+}
+.form-container {
+  background: var(--clr-primary-0);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  border: 2px solid var(--clr-primary-2);
+}
+small.text-muted.ms-3.form-text {
+  margin-left: 0px !important;
+  display: block;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  .form-container {
+    min-width: 40vw;
+    padding: 3rem;
+    border: 2px solid var(--clr-primary-2);
+  }
+  small.text-muted.ms-3.form-text {
+    margin-left: 1rem !important;
+    display: inline-block;
+    margin-top: 2rem;
+  }
+}
+
+/* ----------------------sidebar-------------------------------------*/
+.sidebar-logo {
+  width: 10.5rem;
+}
+.nav-pills .nav-link {
+  display: flex;
+  align-items: center;
+}
+.nav-pills svg,
+.nav-pills span {
+  font-size: 1.25rem;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: var(--bs-list-group-item-padding-y)
+    var(--bs-list-group-item-padding-x);
+  color: var(--bs-list-group-color);
+  padding-left: 0;
+  text-decoration: none;
+  background-color: var(--bs-list-group-bg);
+  border: var(--bs-list-group-border-width) solid
+    var(--bs-list-group-border-color);
+}
+.list-group-item svg {
+  color: var(--clr-primary-5);
+  font-size: 1.375rem;
+}
+.nav-link.text-truncate {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+}
+/* ---------------------------------------------map section------------------------------------------------------------ */
+
+.map-section {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  position: relative;
+}
+.map {
+  flex: 1;
+}
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.bottom-bar {
+  background-color: #fff;
+  height: 10vh;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  z-index: 1000;
+}
+
+/* tree */
+.leaflet-container .leaflet-marker-pane img {
+  width: 74px;
+}
+/* buttons */
+.rightButtons {
+  top: 3.25rem;
+  right: 2rem;
+  z-index: 1000;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.leftButton {
+  top: 4rem;
+  left: 3.3rem;
+  z-index: 1000;
+  position: relative;
+}
+.test1 {
+  position: absolute;
+  z-index: -1;
+  left: -1.8rem;
+  top: -2.6rem;
+}
+.map-logo {
+  width: 3.8rem;
+}
+.circle-button {
+  border-color: transparent !important;
+}
+/* bottom bar */
+
+/* add plant button */
+.circle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: green; /* Change color as needed */
+  color: white !important; /* Icon color */
+  text-decoration: none; /* Remove underline */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+}
+.menu-button {
+  background-color: #fff;
+  color: green !important; /* Icon color */
+  border: none;
+}
+
+.circle-button:hover {
+  background-color: white; /* Darker shade on hover */
+  color: green !important;
+  /* transform: scale(1.1);  */
+}
+.menu-button:hover {
+  background-color: green; /* Darker shade on hover */
+  color: #fff !important;
+  /* transform: scale(1.1);  */
+}
+
+.circle-button svg {
+  width: 24px; /* Icon size */
+  height: 24px; /* Icon size */
+}
+
+/* ----------------------------------------------------Loading.css--------------------------------------------- */
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full screen height */
+  width: 100vw; /* Full screen width */
+  background-color: #f9f9f9; /* Optional background color */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999; /* Ensures it is on top of other elements */
+}
+
+.loading-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-logo {
+  width: 65px; /* Adjust the size of the logo */
+  height: auto;
+  z-index: 1; /* Ensures the logo stays on top of the spinner */
+}
+
+/* Spinner styling */
+.spinner {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 8px solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-top: 8px solid #0f7f32; /* Spinner color */
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  z-index: 0; /* Spinner behind the logo */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* ------------------------------------------------menu------------------------------------------------- */
+/* Add this CSS to your styles */
+.offcanvas {
+  width: 50% !important; /* Set the width to 75% */
+}
+
+.offcanvas.show {
+  display: block; /* Ensure it is displayed when showing */
+}
+/* ------------------------------------------------legend section------------------------------------------- */
+
+.plants-list {
+  margin-bottom: 2rem;
+}
+.legend-image {
+  min-width: 5.5rem;
+  height: 5.5rem;
+  border: 3px solid;
+  display: inline-block;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+.legend-image.approved {
+  border-color: #6b8f00;
+}
+.legend-image.pending {
+  border-color: #995c00;
+}
+.legend-image.rejected {
+  border-color: #b32400;
+}
+.legend-image.booked {
+  border-color: #37708d;
+}
+.legend-image img {
+  width: 2rem;
+}
+.legend-box-container {
+  display: flex;
+  align-items: center;
+}
+.legend-description {
+  padding-left: 1rem;
+  text-transform: capitalize;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* #99cc00 99CC00	8AB800	7AA300	6B8F00	5C7A00	4D6600	3D5200	2E3D00	1F2900	0F1400	000000 */
+/* FF9900	E68A00	CC7A00	B36B00	995C00	804D00	663D00	4C2E00	331F00	190F00	000000*/
+/*FF3300	FF3300	E62E00	CC2900	B32400	991F00	801A00	661400	4C0F00	330A00	190500	000000 */
+
+/*-------------------------------plant section----------------------------- */
+.plant-section {
+  height: 100vh;
+  position: relative;
+}
+/* .plant-picture {
+  border: 2px solid var(--clr-primary-5);
+  width: 10rem;
+  height: 10rem;
+  border-radius: 15px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+} */
+.info-image {
+  /* display: block; */
+  /* position: relative; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.info-plant {
+  display: grid;
+  place-items: center;
+}
+.info-plant-container {
+  display: flex;
+  border: 2px solid var(--clr-primary-1);
+  border-radius: var(--radius);
+}
+.image-plant-box {
+  /* border: 2px solid red; */
+  /* width: 10rem; */
+
+  height: 15rem;
+  padding: 1rem;
+  /* display: flex;
+  align-items: center; */
+  /* position: relative; */
+}
+.info-plant-box {
+  /* border: 2px solid blue; */
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+.approvedPlant {
+  color: #0e792f;
+}
+.rejectedPlant {
+  color: #dc3545;
+}
+.pendingPlant {
+  color: #f29100;
+}
+.bookedPlant {
+  color: #4fa0ca;
+}
+
+/* -----------------rejection modal------------------ */
+.rejection-modal {
+  width: 100vw;
+  height: 100vw;
+  background-color: red;
+}
+
+/* -----------------segnalaci buca------------------ */
+
+.back-btn {
+  text-align: right;
+}
+.back-btn svg {
+  margin-top: 1rem;
+  font-size: 2rem;
+  color: var(--clr-primary-4);
+}
+.back-btn svg:hover {
+  color: var(--clr-primary-6);
+  cursor: pointer;
+}
+
+/* plant image */
+.plant-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: var(--bs-modal-padding);
+}
+.modal-body {
+  position: relative;
+  /* flex: 1 1 auto; */
+  padding: 0;
+  height: 80vh;
+}
