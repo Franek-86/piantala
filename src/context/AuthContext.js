@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const serverDomain = process.env.REACT_APP_DOMAIN_NAME_SERVER;
   const loginOrRegister = async (data) => {
+    console.log("sta?", serverDomain);
     const { email, password } = data;
     const endpoint = isRegister
       ? `${serverDomain}/api/auth/register`

@@ -41,6 +41,15 @@ const OwnedPlants = () => {
           <tbody>
             {myPlants &&
               myPlants.map((plant, index) => {
+                let dateObj = new Date(plant.purchase_date);
+                let myDate = dateObj.toLocaleDateString("it-IT");
+                let date = myDate.split("T")[0];
+
+                let [year, month, day] = date.split("-");
+                day = day < 10 ? "0" + day : day;
+                month = month < 10 ? "0" + month : month;
+                let formattedDate = `${day}/${month}/${year}`;
+
                 return (
                   <tr
                     onClick={() => {
@@ -49,9 +58,7 @@ const OwnedPlants = () => {
                     key={index}
                   >
                     <td>{index + 1}</td>
-                    <td className='bg-info'>
-                      {plant.purchase_date.substring(0, 10)}
-                    </td>
+                    <td className='bg-info'>{date}</td>
                     <td className='bg-info'>{plant.plant_type}</td>
                     <td className='bg-info'>{plant.user_comment}</td>
                   </tr>
