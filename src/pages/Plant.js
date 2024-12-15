@@ -185,6 +185,7 @@ const Plant = () => {
             </button>
           </div>
         ) : (userRole === "admin" && status_piantina === "rejected") ||
+          (userRole === "admin" && status_piantina === "booked") ||
           (userRole === "admin" && status_piantina === "booked") ? (
           <div className='admin-controls mt-5'>
             <hr />

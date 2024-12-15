@@ -25,13 +25,15 @@ export const PlantsProvider = ({ children }) => {
     try {
       const userToken = localStorage.getItem("userToken");
       if (!userToken) {
+        console.log("here122", userToken);
         console.error("No user token found");
         return;
       }
-
+      console.log("here121");
       const payload = JSON.parse(atob(userToken.split(".")[1]));
+      console.log("here1222", payload);
       const userId = payload.id;
-
+      console.log("here123", userId);
       const response = await axios.get(
         `${serverDomain}/api/plants/user-plants`,
         {

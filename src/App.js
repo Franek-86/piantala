@@ -128,22 +128,23 @@ function App() {
                 />
                 {/* <MyTest /> */}
                 <Buttons setPosition={setPosition} markerRef={markerRef} />
-                {plants.map((e) => {
-                  const iconType = e.status_piantina;
-                  const markerIcon = iconMap[iconType];
-                  return (
-                    <Marker
-                      icon={markerIcon}
-                      position={[e.lat, e.lang]}
-                      key={e.id}
-                      eventHandlers={{
-                        click: () => {
-                          navigate(`/map/${e.id}`);
-                        },
-                      }}
-                    ></Marker>
-                  );
-                })}
+                {plants.length > 0 &&
+                  plants.map((e) => {
+                    const iconType = e.status_piantina;
+                    const markerIcon = iconMap[iconType];
+                    return (
+                      <Marker
+                        icon={markerIcon}
+                        position={[e.lat, e.lang]}
+                        key={e.id}
+                        eventHandlers={{
+                          click: () => {
+                            navigate(`/map/${e.id}`);
+                          },
+                        }}
+                      ></Marker>
+                    );
+                  })}
 
                 {position && (
                   <Marker ref={markerRef} position={position}>
